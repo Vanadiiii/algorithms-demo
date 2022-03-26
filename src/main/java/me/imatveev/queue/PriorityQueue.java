@@ -10,10 +10,15 @@ public class PriorityQueue<T extends Comparable<T>> {
         this.size = 0;
     }
 
+    public PriorityQueue(int size) {
+        this.data = new Object[size];
+        this.size = 0;
+    }
+
     /**
      * complexity - O(n)
      */
-    public void insert(T value) {
+    public void push(T value) {
         if (size == 0) {
             data[0] = value;
         } else {
@@ -39,7 +44,7 @@ public class PriorityQueue<T extends Comparable<T>> {
     /**
      * complexity - O(1)
      */
-    public T remove() {
+    public T pop() {
         return (T) data[--size];
     }
 
@@ -59,7 +64,7 @@ public class PriorityQueue<T extends Comparable<T>> {
         return size;
     }
 
-    public T show() {
+    public T peek() {
         if (size == 0) {
             return null;
         } else {
