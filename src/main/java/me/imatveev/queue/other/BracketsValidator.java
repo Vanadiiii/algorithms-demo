@@ -1,12 +1,14 @@
-package me.imatveev.queue;
+package me.imatveev.queue.other;
+
+import me.imatveev.queue.Stack;
 
 public class BracketsValidator {
     private final String brackets;
-    private final BoundedStack<Character> stack;
+    private final Stack<Character> stack;
 
     public BracketsValidator(String brackets) {
         this.brackets = brackets;
-        this.stack = new BoundedStack(brackets.length());
+        this.stack = new Stack(brackets.length());
     }
 
     public boolean validate() {

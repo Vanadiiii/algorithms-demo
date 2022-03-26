@@ -1,15 +1,17 @@
-package me.imatveev.queue;
+package me.imatveev.queue.other;
+
+import me.imatveev.queue.Stack;
 
 public class PostfixExecutor {
     private static final char ZERO = '0';
     private static final char NINE = '9';
 
     private final String postfixExpression;
-    private final BoundedStack<Integer> stack;
+    private final Stack<Integer> stack;
 
     public PostfixExecutor(String postfixExpression) {
         this.postfixExpression = postfixExpression;
-        this.stack = new BoundedStack<>(postfixExpression.length());
+        this.stack = new Stack<>(postfixExpression.length());
     }
 
 

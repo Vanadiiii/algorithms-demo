@@ -1,13 +1,15 @@
-package me.imatveev.queue;
+package me.imatveev.queue.other;
+
+import me.imatveev.queue.Stack;
 
 public class InfixToPostfixFormer {
     private final String expression;
-    private final BoundedStack<Character> stack;
+    private final Stack<Character> stack;
     private final StringBuilder outputBuilder = new StringBuilder();
 
     public InfixToPostfixFormer(String expression) {
         this.expression = expression;
-        this.stack = new BoundedStack<>(expression.length());
+        this.stack = new Stack<>(expression.length());
     }
 
     public String toPostfixForm() {

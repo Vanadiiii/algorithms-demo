@@ -1,11 +1,11 @@
 package me.imatveev.queue;
 
-public class BoundedStack<T> {
+public class Stack<T> {
     private final int maxSize;
     private final Object[] data;
     private int top;
 
-    public BoundedStack(int size) {
+    public Stack(int size) {
         this.maxSize = size;
         this.data = new Object[size];
         this.top = -1;
@@ -37,7 +37,7 @@ public class BoundedStack<T> {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("BoundedStack(")
+        StringBuilder builder = new StringBuilder("Stack(")
                 .append(maxSize)
                 .append(")[");
 

@@ -1,6 +1,6 @@
 package me.imatveev.queue;
 
-public final class PriorityQueue<T extends Comparable<T>> {
+public class PriorityQueue<T extends Comparable<T>> {
     private static final int INITIAL_SIZE = 10;
     private int size;
     private Object[] data;
