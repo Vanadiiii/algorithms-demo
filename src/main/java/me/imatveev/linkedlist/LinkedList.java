@@ -1,29 +1,51 @@
 package me.imatveev.linkedlist;
 
 public class LinkedList<T> {
-    private final Node<T> node;
+    private Node<T> node;
     private int size;
 
     public LinkedList() {
         this.size = 0;
-        this.node = new Node<>();
     }
 
+    /**
+     * complexity - O(1);
+     * add value to first node
+     */
     public void add(T value) {
-        if (size == 0) {
-            node.value = value;
-        } else {
-            Node<T> node = this.node;
-
-            while (node.next != null) {
-                node = node.next;
-            }
-
-            node.next = new Node<>(value);
-        }
+        Node<T> node = new Node<>(value);
+        node.next = this.node;
+        this.node = node;
         ++size;
     }
 
+    /**
+     * complexity - O(N);
+     * add value to some indexed place
+     */
+    public void add(T value, int index) {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("negative index");
+        }
+        if (index > size) {
+            throw new IndexOutOfBoundsException("index more than size");
+        }
+        if (index == 0) {
+            add(value);
+            return;
+        }
+
+        Node<T> parent = getNode(index - 1);
+        Node<T> child = parent.next;
+        Node<T> node = new Node<>(value);
+
+        parent.next = node;
+        node.next = child;
+    }
+
+    /**
+     * complexity - O(N)
+     */
     public T get(int index) {
         Node<T> node = getNode(index);
 
@@ -40,6 +62,13 @@ public class LinkedList<T> {
         }
         if (index < 0) {
             throw new IndexOutOfBoundsException("negative index");
+        }
+
+        if (index == 0) {
+            Node<T> node = this.node;
+            this.node = this.node.next;
+            size--;
+            return node.value;
         }
 
         Node<T> parent = getNode(index - 1);
