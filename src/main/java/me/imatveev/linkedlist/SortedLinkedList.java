@@ -17,10 +17,17 @@ public class SortedLinkedList<T extends Comparable<T>> {
         last.prev = first;
     }
 
+    public SortedLinkedList(Comparator<T> comparator, T[] array) {
+        this(comparator);
+        for (T value : array) {
+            this.add(value);
+        }
+    }
+
     /**
      * complexity - O(N)
      */
-    public void add(T value) { 
+    public void add(T value) {
         Node<T> node = new Node<>(value);
 
         if (size == 0) {
