@@ -1,6 +1,8 @@
 package me.imatveev.linkedlist;
 
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SortedLinkedList<T extends Comparable<T>> {
     private final Node<T> first;
@@ -98,6 +100,10 @@ public class SortedLinkedList<T extends Comparable<T>> {
         return size;
     }
 
+    public Iterator<T> iterator() {
+        return new ListIterator(first.next);
+    }
+
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder("SortedLinkedList[");
@@ -116,6 +122,30 @@ public class SortedLinkedList<T extends Comparable<T>> {
 
         return builder.append(']')
                 .toString();
+    }
+
+    private final class ListIterator implements Iterator<T> {
+        private Node<T> node;
+
+        public ListIterator(Node<T> node) {
+            this.node = node;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return node != SortedLinkedList.this.last;
+        }
+
+        @Override
+        public T next() throws NoSuchElementException {
+            if (node != SortedLinkedList.this.last) {
+                T value = node.value;
+                node = node.next;
+                return value;
+            } else {
+                throw new NoSuchElementException();
+            }
+        }
     }
 
     private static final class Node<T> {
