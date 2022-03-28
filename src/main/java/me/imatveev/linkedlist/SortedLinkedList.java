@@ -40,6 +40,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
                 node.prev = iterated.prev;
                 iterated.prev.next = node;
                 iterated.prev = node;
+                ++size;
                 return;
             }
 
@@ -131,7 +132,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
         }
 
         int count = 0;
-        Node<T> node = this.first;
+        Node<T> node = first.next;
         while (count < index) {
             node = node.next;
             ++count;
