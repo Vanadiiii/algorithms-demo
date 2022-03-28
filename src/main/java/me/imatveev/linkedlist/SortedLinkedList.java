@@ -101,7 +101,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
     }
 
     public Iterator<T> iterator() {
-        return new ListIterator(first.next);
+        return new CustomIterator(first.next);
     }
 
     @Override
@@ -124,27 +124,38 @@ public class SortedLinkedList<T extends Comparable<T>> {
                 .toString();
     }
 
-    private final class ListIterator implements Iterator<T> {
-        private Node<T> node;
+    private final class CustomIterator implements Iterator<T> {
+        private Node<T> currentNode;
 
-        public ListIterator(Node<T> node) {
-            this.node = node;
+        public CustomIterator(Node<T> node) {
+            this.currentNode = node;
         }
 
         @Override
         public boolean hasNext() {
-            return node != SortedLinkedList.this.last;
+            return currentNode != SortedLinkedList.this.last;
         }
 
         @Override
         public T next() throws NoSuchElementException {
-            if (node != SortedLinkedList.this.last) {
-                T value = node.value;
-                node = node.next;
+            if (hasNext()) {
+                T value = currentNode.value;
+                currentNode = currentNode.next;
                 return value;
             } else {
                 throw new NoSuchElementException();
             }
+        }
+
+        @Override
+        public void remove() {
+            if (currentNode == first || currentNode.prev == first) {
+                throw new UnsupportedOperationException();
+            }
+
+            Node<T> prev = currentNode.prev;
+            prev.prev.next = currentNode;
+            currentNode.prev = prev.prev;
         }
     }
 
