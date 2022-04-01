@@ -14,6 +14,10 @@ public class MergeSort<T extends Comparable<T>> {
         this.swap = new Object[data.length];
     }
 
+
+    /**
+     * complexity - O(N * log₂N)
+     */
     public void sort() {
         sortHelper(0, data.length - 1);
     }
