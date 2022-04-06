@@ -1,11 +1,12 @@
-package me.imatveev.sort;
+package me.imatveev.sort.realizations;
+
+import me.imatveev.sort.AbstractSortingAlgorithm;
 
 import java.util.Comparator;
 
-public class BubbleSort<T extends Comparable<T>> {
-
+public class BubbleSort<T extends Comparable<T>> extends AbstractSortingAlgorithm<T> {
     /**
-     * complexity - O(n^2)
+     * complexity - O(N^2)
      */
     public void sort(T[] data, Comparator<T> comparator) {
         for (int i = 0; i < data.length - 1; ++i) {
@@ -15,11 +16,5 @@ public class BubbleSort<T extends Comparable<T>> {
                 }
             }
         }
-    }
-
-    private void swap(T[] data, int idx1, int idx2) {
-        T swap = data[idx1];
-        data[idx1] = data[idx2];
-        data[idx2] = swap;
     }
 }
