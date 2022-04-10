@@ -7,14 +7,14 @@ import java.util.Comparator;
 public class ShellSort<T extends Comparable<T>> extends AbstractSortingAlgorithm<T> {
 
     /**
-     * complexity - from O(N³/⁴) to O(N⁷/⁸)
+     * <p>complexity - O(N*(log N)²)</p>
+     * <p>~ from O(N³/⁴) to O(N⁷/⁸)</p>
      */
     @Override
     public void sort(T[] data, Comparator<T> comparator) {
         int step = findFirstStep(data.length);
 
         while (step >= 1) {
-            System.out.println("step - " + step);
             nSort(step, data, comparator);
             step = nextStep(step);
         }
