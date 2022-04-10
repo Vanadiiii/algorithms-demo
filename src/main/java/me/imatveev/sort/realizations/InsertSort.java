@@ -8,6 +8,7 @@ public class InsertSort<T extends Comparable<T>> extends AbstractSortingAlgorith
     /**
      * <p>complexity - O(N^2)</p>
      */
+    @Override
     public void sort(T[] data, Comparator<T> comparator) {
         for (int i = 1; i < data.length; ++i) {
             T swap = data[i];

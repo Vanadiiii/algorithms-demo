@@ -9,6 +9,7 @@ public class ChoseSort<T extends Comparable<T>> extends AbstractSortingAlgorithm
      * <p>complexity - O(N^2)</p>
      * <p>work in a 2 time faster, then bubble sort</p>
      */
+    @Override
     public void sort(T[] data, Comparator<T> comparator) {
         for (int i = 0; i < data.length - 1; ++i) {
             int smallestIndex = findSmallest(data, comparator, i);
