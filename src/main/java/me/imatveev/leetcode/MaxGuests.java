@@ -4,55 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TreeTraversal {
-
-    public static void main(String[] args) {
-        System.out.println(rangesToString(new int[]{1, 2, 3, 5, 6, 7, 9, 11}));
-    }
-
-    public static String rangesToString(int[] numbers) {
-        int startIdx = 0;
-        int endIdx = 0;
-
-        final StringBuilder builder = new StringBuilder();
-
-        int currentIdx = 1;
-
-        int start = numbers[startIdx];
-        int end = numbers[endIdx];
-        int current = numbers[currentIdx];
-
-        while (currentIdx < numbers.length) {
-            current = numbers[currentIdx];
-
-            if (current - end > 1) {
-                builder.append(start);
-                if (end > start) {
-                    builder.append("->")
-                            .append(end);
-                }
-                builder.append(",");
-
-                startIdx = currentIdx;
-                start = numbers[startIdx];
-            }
-
-            endIdx = currentIdx;
-            end = numbers[endIdx];
-            ++currentIdx;
-        }
-
-        if (current - end > 1) {
-            builder.append(start);
-            if (end > start) {
-                builder.append("->")
-                        .append(end);
-            }
-        }
-
-        return builder.toString();
-    }
-
+public class MaxGuests {
     public static int getMaxGuest(List<Guest> guests) {
         //key - day, value - count
         final Map<Integer, Integer> guestCountMap = new HashMap<>();

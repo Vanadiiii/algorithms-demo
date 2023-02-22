@@ -1,12 +1,20 @@
 package me.imatveev.aston;
 
+import me.imatveev.leetcode.structure.Graph;
+import me.imatveev.leetcode.structure.ListNode;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
 
 public class Solving {
     public static void main(String[] args) {
         Solving solving = new Solving();
 
-        System.out.println(solving.findIndexInSortedArray(new int[]{1, 2, 3, 4, 5}, 3));
+        System.out.println(solving.compress(new int[]{1, 2, 3, 4, 6, 7, 9, 10}));
     }
 
     /**
@@ -39,8 +47,30 @@ public class Solving {
      * <p>2. Найти все простые числа из массива</p>
      * <p></p>
      */
-    public int[] findAllSimpleNumbers(int[] nums) {
-        return nums; //todo
+    public List<Integer> findAllSimpleNumbers(int[] nums) {
+        final List<Integer> result = new ArrayList<>();
+
+        for (final int value : nums) {
+            if (isSimpleNumber(value)) {
+                result.add(value);
+            }
+        }
+
+        return result;
+    }
+
+    private boolean isSimpleNumber(int num) {
+        int hiBound = num / 2;
+        int lowBound = 2;
+
+        while (lowBound <= hiBound) {
+            if (num % lowBound == 0) {
+                return false;
+            }
+            ++lowBound;
+            hiBound = num / lowBound;
+        }
+        return true;
     }
 
     /**
@@ -87,7 +117,8 @@ public class Solving {
      * <p>5. Напишите метод, находящий максимальное из двух чисел без использования if-else или любых других операторов сравнения.</p>
      */
     public int max(int a, int b) {
-        return (a + b + (int) Math.sqrt((a - b) * (a - b))) / 2;
+//        return (a + b + (int) Math.sqrt((a - b) * (a - b))) / 2;
+        return a - ((a - b) & ((a - b) >> (Integer.SIZE - 1)));
     }
 
     /**
@@ -143,7 +174,98 @@ public class Solving {
             }
         }
 
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                if (isRemoveRow[i] || isRemoveColumn[j]) {
+                    array[i][j] = 0;
+                }
+            }
+        }
+    }
 
+
+    /**
+     * 8. Напишите код для удаления дубликатов из несортированного связного списка
+     */
+    public ListNode removeDuplicates(ListNode list) {
+        if (list == null || list.getNext() == null) {
+            return list;
+        }
+
+        final Set<Integer> valueSet = new HashSet<>();
+
+        ListNode parent = list;
+        valueSet.add(parent.getVal());
+
+        ListNode node = parent.getNext();
+        while (node != null) {
+            final boolean isAlreadyExists = !valueSet.add(node.getVal());
+
+            if (isAlreadyExists) {
+                final ListNode next = node.getNext();
+
+                parent.setNext(next);
+                node = next;
+            } else {
+                parent = node;
+                node = node.getNext();
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * 9. Как реализовать стек, в котором кроме стандартных функций push и рор будет поддерживаться функция min, <br>
+     * возвращающая минимальный элемент? <br>
+     * Все операции - push, рор и min - должны выполняться за время O(1).
+     */
+    public static class MinStack {
+        private final Stack<Integer> stack;
+        private int minimum;
+
+        public MinStack() {
+            this.stack = new Stack<>();
+        }
+
+        public void push(int value) {
+            if (stack.isEmpty()) {
+                stack.push(value);
+                minimum = value;
+                return;
+            }
+
+            if (value < minimum) {
+                stack.push(2 * value - minimum);
+                minimum = value;
+            } else {
+                stack.push(value);
+            }
+        }
+
+        public int pop() {
+            final int value = stack.pop();
+
+            if (value >= minimum) {
+                return value;
+            } else {
+                final int result = minimum;
+                minimum = 2 * minimum - value;
+
+                return result;
+            }
+        }
+
+        public int min() {
+            return minimum;
+        }
+    }
+
+    /**
+     * 9. Для заданного направленного графа разработайте алгоритм, проверяющий существование маршрута между двумя узлами.
+     */
+    public <T> boolean hasPathInDirectionalGraph(Graph<T> graph, T from, T to) {
+        return graph.hasPathDfs(from, to);
     }
 
 
@@ -183,4 +305,61 @@ public class Solving {
         return result;
     }
 
+    /**
+     * Задача 30.08.2022<br>
+     * Дан список интов, повторяющихся элементов в списке нет.<br>
+     * Нужно преобразовать это множество в строку, сворачивая соседние по числовому ряду числа в диапазоны.<br>
+     * <p>
+     * Примеры:<br>
+     * [1,4,5,2,3,9,8,11,0] => "0-5,8-9,11"<br>
+     * [1,4,3,2] => "1-4"<br>
+     * [1,4] => "1,4"<br>
+     */
+    public String compress(int[] array) {
+        final int length = array.length;
+
+        int end = 0;
+        int start = 0;
+
+        final StringBuilder builder = new StringBuilder("[");
+
+        while (end < length) {
+            if (end == length - 1 || array[end + 1] - array[end] > 1) {
+                this.writeRange(start, end, array, builder);
+                start = end + 1;
+            }
+            ++end;
+        }
+
+        return builder.append("]")
+                .toString();
+    }
+
+    private void writeRange(int start, int end, int[] array, StringBuilder builder) {
+        builder.append(array[start]);
+        if (end != start) {
+            builder.append("->")
+                    .append(array[end]);
+        }
+        if (end < array.length - 1) {
+            builder.append(", ");
+        }
+    }
+
+    /**
+     * Задача №3
+     * нужно реализовать функцию oneEditApart , <br>
+     * проверяющую, можно ли одну строку получить из другой <br>
+     * не более, чем за одно исправление (удаление, добавление, изменение символа)
+     * <p>
+     * oneEditApart("cat", "dog") -> false <br>
+     * oneEditApart("cat", "cats") -> true  <br>
+     * oneEditApart("cat", "cut") -> true  <br>
+     * oneEditApart("cat", "cast") -> true  <br>
+     * oneEditApart("cat", "at") -> true  <br>
+     * oneEditApart("cat", "acts") -> false  <br>
+     */
+    public boolean isOneEditApart(String str1, String str2) {
+        return false;
+    }
 }
